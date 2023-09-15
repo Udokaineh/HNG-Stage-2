@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&display=swap');
+
+/* *{
+  box-sizing: border-box;
+  font-family: 'DM Sans', sans-serif;
+  background-color: black;
+} */
+.CircularProgressbar-path {
+  stroke: red;
+}
+.CircularProgressbar-trail {
+  stroke: gray;
+}
+.CircularProgressbar-text {
+  fill: yellow;
+}
+.CircularProgressbar-background {
+  fill: green;
+}
