@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from "react"
-import myLogo from "../src/Assets/Logo.svg"
+import myLogo from "../src/Assets/Logoo.svg"
 import searchIcon from "../src/Assets/Search.svg"
 import myMenu from "../src/Assets/Menu.svg"
 import cherry from "../src/Assets/cherry.svg"
 import play from "../src/Assets/Play.svg"
+import { FaHeart } from 'react-icons/fa'
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 import { Link } from 'react-router-dom'
@@ -18,7 +19,11 @@ const HomePage = () => {
     const [error, setError] = useState(null)
     const [searchState, setSearchState] = useState("")
     const [percentage] = useState(0)
+    // const [isClicked, setIsClicked] = useState(false);
 
+    // const handleClick = (index) => {
+    //     setIsClicked(!isClicked)
+    // }
 
     const handleSearch = (e) => {
         setSearchState(e.target.value)
@@ -70,7 +75,6 @@ const HomePage = () => {
                 }
                 const data = await response.json()
                 setTopMovies(data.results)
-                console.log(data)
                 setLoading(false)
             } catch (error) {
                 setError("Please reload the page!")
@@ -106,7 +110,7 @@ const HomePage = () => {
                     <div className="hero-text-div">
                         <h2>John Wick 3 : Parabellum</h2>
                         <div className="percent">
-                            <p className="highlight" >TMDb 86.0 / 100 </p>
+                            <p> <span className="highlight">TMDb</span> 86.0 / 100 </p>
                             <div className="cherry-div">
                                 <img src={cherry} alt="cherry-icon" />
                                 <p>87%</p>
@@ -137,23 +141,30 @@ const HomePage = () => {
 
                             return (
                                 <div key={movie.id} className="movie-card" data-testid="movie-card">
-                                    <div>
-                                        <Link to={`/movie/${movie.id}`}>
-                                            <img
-                                                src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
-                                                alt={movie.title}
-                                                data-testid="movie-poster"
-                                            />
+                                    <Link to={`/movie/${movie.id}`}>
+                                        <img className="movie-img"
+                                            src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
+                                            alt={movie.title}
+                                            data-testid="movie-poster"
+                                        />
+                                    </Link>
+                                    <p className="date" data-testid="movie-release-date">{new Date(movie.release_date).toUTCString()}</p>
+                                    <div className="fav">
+                                        <Link to={`/movie/${movie.id}`} className="title-link">
+                                            <h2 className="title" data-testid="movie-title">{movie.title}</h2>
                                         </Link>
-                                        <p className="date" data-testid="movie-release-date">{new Date(movie.release_date).toUTCString()}</p>
-                                        <h2 data-testid="movie-title">{movie.title}</h2>
-                                        <p className="highlight">TMDb {movie.vote_average * 10}.0 / 100</p>
-                                        <p>{movie.vote_average * 10}%</p>
-                                        <div style={{ width: '40px' }}>
+                                        {/* <FaHeart className={`fav-heart ${isClicked ? "red-heart" : " "}`}
+                                            onClick={handleClick} /> */}
+                                            <FaHeart className="fav-heart"/>
+                                    </div>
+                                    <div className="high-progress-div">
+                                        <p className="movie-p"> <span className="highlight">TMDb</span> {movie.vote_average * 10}.0 / 100</p>
+                                        {/* <p>{movie.vote_average * 10}%</p> */}
+                                        <div style={{ width: '36px', trailColor: "black" }}>
                                             <CircularProgressbar value={moviePercentage} text={`${moviePercentage}%`} />
                                         </div>
-                                        <p>{getGenre}</p>
                                     </div>
+                                    <p className="genre" >{getGenre}</p>
                                 </div>
                             )
                         })}
