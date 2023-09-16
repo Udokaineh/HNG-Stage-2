@@ -68,13 +68,14 @@ const HomePage = () => {
         const fetchTenMovies = async () => {
             try {
                 const response = await fetch(
-                    `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`
+                    `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`
                 );
                 if (!response.ok) {
                     throw new Error("Please reload the page!")
                 }
                 const data = await response.json()
-                setTopMovies(data.results)
+                const topTenMovies = data.results.slice(0, 10)
+                setTopMovies(topTenMovies)
                 setLoading(false)
             } catch (error) {
                 setError("Please reload the page!")
