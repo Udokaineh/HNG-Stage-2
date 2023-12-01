@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react"
 import myLogo from "../src/Assets/Logo.svg"
 import searchIcon from "../src/Assets/Search.svg"
 import myMenu from "../src/Assets/Menu.svg"
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
-import 'react-circular-progressbar/dist/styles.css'
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
+import "react-circular-progressbar/dist/styles.css"
+import { Link } from 'react-router-dom'
 import './App.css'
 
 
@@ -14,6 +15,7 @@ const HomePage = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [searchState, setSearchState] = useState("")
+    const [percentage] = useState(0)
 
 
     const handleSearch = (e) => {
@@ -34,21 +36,15 @@ const HomePage = () => {
         .join(", ")
     }
 
-    const CircularProgressBar = ({percentage}) => {
-        return (
-            <div style={{width: "100px"}}>
-                <CircularProgressbar 
-                    value={percentage}
-                    text={`${percentage}%`}
-                    style={buildStyles({
-                            textColor: 'black',
-                            pathColor: 'green',
-                            trailColor: 'lightgray'
-                    })}
-                />
-            </div>
-        )
-    }
+    <CircularProgressbar
+    value={percentage}
+    text={`${percentage}%`}
+    styles={buildStyles({
+      textColor: "black",
+      pathColor: "green",
+      trailColor: "#ccc"
+    })}
+  />
 
     useEffect(() => {
         const apiKey = "61463b958c4331101d43c1bba4ed0c37"
@@ -87,8 +83,8 @@ const HomePage = () => {
 return (
     <div>
         <div>
-            <div>
-                <img src={myLogo} alt="logo" />
+            <div className="logo-name-div">
+                <img className="logo" src={myLogo} alt="logo" />
                 <h2>Movie Box</h2>
             </div>
             <div>
@@ -122,21 +118,26 @@ return (
             <div className="home-container">
                 {filteredSearch.map((movie) => {
                     const getGenre = getGenreName(movie.genre_ids)
+                    const moviePercentage = movie.vote_average * 10
+                  
                     return (
                         <div key={movie.id} className="movie-card" data-testid="movie-card">
-                            <a href={`https://image.tmdb.org/t/p/w185${movie.poster_path}`} ><img
+                              <Link to={`/movie/${movie.id}`}>
+                            <img
                                 src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
                                 alt={movie.title}
                                 data-testid="movie-poster"
-                            /></a>
-                            <p data-testid="movie-release-date">{movie.release_date}</p>
+                            />
+                            </Link>
+                            <p data-testid="movie-release-date">{new Date(movie.release_date).toUTCString()}</p>
                             <h2 data-testid="movie-title">{movie.title}</h2>
                             <p>TMDb {movie.vote_average * 10}.0 / 100</p>
                             <p>{movie.vote_average * 10}%</p>
-                            <CircularProgressBar percentage={movie.vote_average * 10} />
+                            <div style={{width: '40px'}}>
+                            <CircularProgressbar value={moviePercentage} text={`${moviePercentage}%`} />
+                            </div>
                             <p>{getGenre}</p>
                         </div>
-                        // console.log(movie.poster_path)
                     )
                 })}
             </div>
