@@ -1,3 +1,4 @@
+import React from "react"
 import HomePage from "./HomePage";
 import Footer from "./Footer"
 import Display from "./Display"
@@ -17,5 +18,16 @@ function App() {
         </Router>
     )
 }
+
+// export default App;
+// function App() {
+//     return (
+//         <div>
+//             <HomePage />
+//             <Display />
+//             <Footer />
+//         </div>
+//     )
+// }
 
 export default App;
